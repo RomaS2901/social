@@ -13,4 +13,4 @@ class SignUp(CreateAPIView):
 
     model = get_user_model()
     serializer_class = UserSerializer
-    permissions_classes = [AllowAny]
+    permission_classes = [AllowAny]

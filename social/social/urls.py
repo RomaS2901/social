@@ -21,6 +21,7 @@ from social import views
 
 urlpatterns = [
     path("", views.root_api_view, name="api-root"),
+    path("", include("post.urls")),
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
     path("accounts/", include("accounts.urls")),
