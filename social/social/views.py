@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -17,5 +16,6 @@ def root_api_view(request, format=None):
             "token-verify": reverse(
                 "accounts:token-verify", request=request, format=format
             ),
+            "signup": reverse("accounts:signup", request=request, format=format),
         }
     )
