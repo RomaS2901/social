@@ -4,8 +4,12 @@ from django.conf import settings
 
 class Post(models.Model):
 
+    # to_field=username is better verbose option, instead of using id's
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="posts"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="posts",
+        to_field="username",
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Edited at")
