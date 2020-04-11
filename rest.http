@@ -79,7 +79,7 @@ Authorization: Bearer {{token}}
 
 {
     "post": "{{postId}}",
-    "users": ["{{username}}"]
+    "users": ["{{username}}"],
 }
 
 ###
@@ -100,3 +100,11 @@ Authorization: Bearer {{token}}
     "post": "{{postId}}",
     "users": ["{{username}}"]
 }
+
+###
+# @name analytics
+GET {{host}}/api/analytics
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {{token}}
+
+date_from=2020-04-11&date_to=2020-04-11
