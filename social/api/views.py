@@ -2,6 +2,8 @@ import datetime
 
 from django.shortcuts import render
 from django.utils import timezone
+from django.db.models.functions import TruncDay
+from django.db.models import Count
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -41,5 +43,13 @@ def analytics(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
     else:
-        likes_analytics = Like.objects.filter(created_at__range=[date_from, date_to])
-        return Response(likes_analytics.count())
+        likes_analytics = (
+            Like.objects.filter(created_at__range=[date_from, date_to])
+            .values("created_at")
+            .annotate(
+                day=TruncDay("created_at", tzinfo=timezone.get_current_timezone())
+            )  # trunc datetime field values to a day
+            .values("day")  # annotate -> value => equivalent to group by in Django
+            .annotate(likes_count=Count("day"))  # count repetitive days
+        )
+        return Response({"analytics": likes_analytics})
