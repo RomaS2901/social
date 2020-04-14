@@ -6,12 +6,6 @@ from post.models import Post, Like, Dislike
 from accounts.serializers import UserSerializer
 
 
-# class MyStringRelatedField(serializers.StringRelatedField):
-#     def to_internal_value(self, data):
-#         print(data)
-#         return super().to_internal_value(data)
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()

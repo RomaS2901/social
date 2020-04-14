@@ -30,7 +30,7 @@ Content-Type: application/json
     "password": "tre12345"
 }
 
-@newUserNameId = {{signup.response.body.$.id}}
+@newUserName = {{signup.response.body.$.username}}
 
 ###
 # @name postsList
@@ -66,45 +66,9 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
-# @name likeList
-GET {{host}}/likes/
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-###
-# @name addLike
-POST {{host}}/likes/
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-    "post": "{{postId}}",
-    "users": ["{{username}}"],
-}
-
-###
-# @name dislikeList
-GET {{host}}/dislikes/
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-
-###
-
-# @name addDislike
-POST {{host}}/dislikes/
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-    "post": "{{postId}}",
-    "users": ["{{username}}"]
-}
-
-###
 # @name analytics
 GET {{host}}/api/analytics
 Content-Type: application/x-www-form-urlencoded
 Authorization: Bearer {{token}}
 
-date_from=2020-02-11&date_to=2020-04-11
+date_from=2020-02-11&date_to=2020-04-30
