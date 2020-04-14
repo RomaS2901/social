@@ -21,33 +21,39 @@ class Post(models.Model):
         return str(self.title)
 
     def get_likes(self):
-        return self.likes.users.count()
+        return self.likes.count()
 
     def get_dislikes(self):
-        return self.dislikes.users.count()
+        return self.dislikes.count()
 
 
 class Like(models.Model):
-    """ Likes for post. Unique for each post. Counts by how many users left likes for post """
+    """ All likes posts """
 
-    post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name="likes")
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="post_likes")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="likes",
+        verbose_name="Like user",
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
 
     def __str__(self):
-        return f"{self.post.title}'s like"
+        return f'{self.user}\'s like to "{self.post.title}"'
 
 
 class Dislike(models.Model):
-    """ Dislikes for post. Unique for each post. Counts by how many users left dislikes for post """
+    """ All dislikes for posts """
 
-    post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name="dislikes")
-    users = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="post_dislikes"
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="dislikes")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="dislikes",
+        verbose_name="Dislike user",
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
 
     def __str__(self):
-        return f"{self.post.title}'s dislike"
+        return f'{self.user}\'s dislike to "{self.post.title}"'
