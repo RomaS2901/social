@@ -16,15 +16,21 @@ class PostViewSet(ModelViewSet):
     @action(detail=True, methods=["PATCH"])
     def like(self, request, pk=None):
         post = self.get_object()
-        print(post.likes.users_set)
-        self.request.user.username
-        serializer = self.get_serializer()
+        # if used left dislike and changed his mind
+        if post.dislikes.users.filter(username=self.request.user.username).exists():
+            post.dislikes.users.remove(self.request.user)
+        post.likes.users.add(self.request.user)
+        serializer = self.get_serializer(post)
         return Response(serializer.data)
 
     @action(detail=True, methods=["PATCH"])
     def dislike(self, request, pk=None):
         post = self.get_object()
-        self.request.user.username
+        if post.likes.users.filter(username=self.request.user.username).exists():
+            post.likes.users.remove(self.request.user)
+        post.dislikes.users.add(self.request.user)
+        serializer = self.get_serializer(post)
+        return Response(serializer.data)
 
 
 class LikeViewSet(ModelViewSet):

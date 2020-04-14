@@ -1,24 +1,14 @@
 ### VARS
 @host=http://127.0.0.1:8000
-@username=root
-@password=1
+@Rootusername=root
+@Rootpassword=1
+@password=tre12345
 
 ###
 # @name root-api
 GET {{host}} HTTP/1.1
 content-type: application/json
 
-###
-# @name auth
-POST {{host}}/accounts/token/ HTTP/1.1
-Content-Type: application/json
-
-{
-    "username": "{{username}}",
-    "password": "{{password}}"
-}
-###
-@token = {{auth.response.body.$.access}}
 
 ###
 # @name signup
@@ -27,10 +17,23 @@ Content-Type: application/json
 
 {
     "username": "test{{$randomInt 10 1000}}",
-    "password": "tre12345"
+    "password": "{{password}}"
 }
 
 @newUserName = {{signup.response.body.$.username}}
+
+
+###
+# @name auth
+POST {{host}}/accounts/token/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "{{newUserName}}",
+    "password": "{{password}}"
+}
+###
+@token = {{auth.response.body.$.access}}
 
 ###
 # @name postsList
@@ -47,7 +50,7 @@ Authorization: Bearer {{token}}
 {
     "title": "Post {{$randomInt 10 10000}}",
     "body": "Post body {{$randomInt 10 10000}}",
-    "user": "root"
+    "user": "{{newUserName}}"
 }
 
 @postId = {{postCreate.response.body.$.id}}
@@ -66,9 +69,23 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
+
+# @name addLike
+PATCH {{host}}/posts/{{postId}}/like/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# @name addDislike
+PATCH {{host}}/posts/{{postId}}/dislike/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
 # @name analytics
 GET {{host}}/api/analytics
 Content-Type: application/x-www-form-urlencoded
 Authorization: Bearer {{token}}
 
-date_from=2020-02-11&date_to=2020-04-30
+date_from=2020-04-14&date_to=2020-04-15
