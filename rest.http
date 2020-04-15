@@ -103,3 +103,10 @@ Content-Type: application/x-www-form-urlencoded
 Authorization: Bearer {{token}}
 
 date_from=2020-02-14&date_to=2020-04-16
+
+###
+
+# @name userActivity
+GET {{host}}/api/user_activity/
+Content-Type: application/json
+Authorization: Bearer {{token}}

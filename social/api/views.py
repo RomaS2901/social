@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 
+from api.serializers import UserAPISerializer
+
 from post.models import Like
 
 
@@ -39,3 +41,9 @@ def analytics(request):
             .annotate(count=Count("day"))
         )
         return Response({"analytics": likes_analytics})
+
+
+@api_view(["GET"])
+def user_activity(request):
+    serializer = UserAPISerializer(request.user)
+    return Response(serializer.data)
