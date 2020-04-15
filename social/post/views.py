@@ -3,6 +3,7 @@ from django.db.utils import IntegrityError
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
 
 from post.serializers import PostSerializer, LikeSerializer, DislikeSerializer
 from post.models import Post, Like, Dislike
@@ -25,7 +26,7 @@ class PostViewSet(ModelViewSet):
             # means already liked by this user
             pass
         serializer = self.get_serializer(post)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
     @action(detail=True, methods=["POST"])
     def dislike(self, request, pk=None):
@@ -37,7 +38,7 @@ class PostViewSet(ModelViewSet):
         except IntegrityError:
             pass
         serializer = self.get_serializer(post)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
 
 class LikeViewSet(ReadOnlyModelViewSet):
