@@ -39,6 +39,9 @@ class Like(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
 
+    class Meta:
+        unique_together = (("post", "user"),)
+
     def __str__(self):
         return f'{self.user}\'s like to "{self.post.title}"'
 
@@ -54,6 +57,9 @@ class Dislike(models.Model):
         verbose_name="Dislike user",
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
+
+    class Meta:
+        unique_together = (("post", "user"),)
 
     def __str__(self):
         return f'{self.user}\'s dislike to "{self.post.title}"'

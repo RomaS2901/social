@@ -7,8 +7,8 @@ from post.models import Post, Like, Dislike
 
 class PostSerializer(serializers.ModelSerializer):
 
-    likes = serializers.IntegerField(source="get_likes")
-    dislikes = serializers.IntegerField(source="get_dislikes")
+    likes = serializers.IntegerField(source="get_likes", read_only=True)
+    dislikes = serializers.IntegerField(source="get_dislikes", read_only=True)
 
     class Meta:
         model = Post
@@ -17,10 +17,8 @@ class PostSerializer(serializers.ModelSerializer):
 
 class LikeSerializer(serializers.ModelSerializer):
 
-    # Have ability to create likes and dislikes using username field instead of raw pk
-    #   as username field is unqiue as well
     users = serializers.SlugRelatedField(
-        slug_field="username", queryset=get_user_model().objects.all(), many=True
+        slug_field="username", queryset=get_user_model().objects.all()
     )
 
     class Meta:
@@ -30,8 +28,8 @@ class LikeSerializer(serializers.ModelSerializer):
 
 class DislikeSerializer(serializers.ModelSerializer):
 
-    users = serializers.SlugRelatedField(
-        slug_field="username", queryset=get_user_model().objects.all(), many=True
+    user = serializers.SlugRelatedField(
+        slug_field="username", queryset=get_user_model().objects.all()
     )
 
     class Meta:
