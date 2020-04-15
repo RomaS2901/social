@@ -1,12 +1,11 @@
 from django.db.utils import IntegrityError
-
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from post.serializers import PostSerializer, LikeSerializer, DislikeSerializer
-from post.models import Post, Like, Dislike
+from post.models import Dislike, Like, Post
+from post.serializers import DislikeSerializer, LikeSerializer, PostSerializer
 
 
 class PostViewSet(ModelViewSet):
