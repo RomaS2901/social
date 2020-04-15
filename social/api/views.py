@@ -2,6 +2,7 @@ import datetime
 
 from django.shortcuts import render
 from django.utils import timezone
+
 from django.db.models.functions import TruncDay
 from django.db.models import Count
 
@@ -15,21 +16,8 @@ from post.models import Like
 @api_view(["GET"])
 def analytics(request):
     try:
-        # as from client we get only naive date in ISO format...
-        # And date will be YYYY-MM-DD 00:00:00,
-        # so if Like was created today it won't be included to the analytics for that day because of the time...
-        # as it starts to count from beginning of "date_to"... And need to extend "date_to"
-        # to max 23:59:59 time to get Likes for a full date as requested.
-        date_from = datetime.datetime.combine(
-            datetime.datetime.fromisoformat(request.data["date_from"]),
-            datetime.time.min,
-            tzinfo=timezone.get_current_timezone(),
-        )
-        date_to = datetime.datetime.combine(
-            datetime.datetime.fromisoformat(request.data["date_to"]),
-            datetime.time.max,
-            tzinfo=timezone.get_current_timezone(),
-        )
+        date_from = datetime.datetime.fromisoformat(request.data["date_from"])
+        date_to = datetime.datetime.fromisoformat(request.data["date_to"])
     except KeyError:
         return Response(
             {
@@ -46,10 +34,8 @@ def analytics(request):
         likes_analytics = (
             Like.objects.filter(created_at__range=[date_from, date_to])
             .values("created_at")
-            .annotate(
-                day=TruncDay("created_at", tzinfo=timezone.get_current_timezone())
-            )  # trunc datetime field values to a day
-            .values("day")  # annotate -> value => equivalent to group by in Django
-            .annotate(likes_count=Count("day"))  # count repetitive days
+            .annotate(day=TruncDay("created_at"))
+            .values("day")
+            .annotate(count=Count("day"))
         )
         return Response({"analytics": likes_analytics})
