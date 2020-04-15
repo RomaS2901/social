@@ -70,15 +70,29 @@ Authorization: Bearer {{token}}
 
 ###
 
+# @name likesList
+GET {{host}}/likes/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
 # @name addLike
-PATCH {{host}}/posts/{{postId}}/like/
+POST {{host}}/posts/{{postId}}/like/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# @name dislikesList
+GET {{host}}/dislikes/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
 
 # @name addDislike
-PATCH {{host}}/posts/{{postId}}/dislike/
+POST {{host}}/posts/{{postId}}/dislike/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 

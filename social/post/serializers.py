@@ -17,7 +17,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 class LikeSerializer(serializers.ModelSerializer):
 
-    users = serializers.SlugRelatedField(
+    user = serializers.SlugRelatedField(
         slug_field="username", queryset=get_user_model().objects.all()
     )
 
